@@ -262,7 +262,7 @@ const STORE_PRODUCTS = {
 
 // Função para carregar produtos de Excel (futuro)
 function loadProductsFromExcel(store, data) {
-  STORE_PRODUCTS[store] = data.map(function(row) {
+  STORE_PRODUCTS[store] = data.map(function (row) {
     return {
       name: row.nome || row.produto || row.item || '',
       qty: parseInt(row.qty || row.quantidade || row.qtd || row.estoque || 0)

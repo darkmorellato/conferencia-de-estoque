@@ -174,8 +174,13 @@
 
   // ===== LOAD INVENTORY =====
   async function loadInventory() {
+    console.log('Loading inventory for:', currentStore, currentMonth);
+    console.log('Products available:', STORE_PRODUCTS[currentStore] ? STORE_PRODUCTS[currentStore].length : 'STORE NOT FOUND');
+    console.log('STORE_PRODUCTS keys:', Object.keys(STORE_PRODUCTS));
+    
     var key = STORAGE_PREFIX + currentStore + '_' + currentMonth;
     var stored = localStorage.getItem(key);
+    console.log('Stored in localStorage:', stored ? 'YES' : 'NO');
     
     // Verificar se já existe no Firebase
     var saved = await getSavedInventories();
