@@ -131,7 +131,7 @@
   }
 
   // ===== LOGIN =====
-  loginForm.addEventListener('submit', function (e) {
+  loginForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     var store = storeSelect.value;
     var month = monthSelect.value;
@@ -154,7 +154,7 @@
     currentStore = store;
     currentMonth = month;
     loginError.classList.add('hidden');
-    loadInventory();
+    await loadInventory();
     showInventoryPage();
   });
 
@@ -173,12 +173,28 @@
   });
 
   // ===== LOAD INVENTORY =====
-  function loadInventory() {
+  async function loadInventory() {
     var key = STORAGE_PREFIX + currentStore + '_' + currentMonth;
     var stored = localStorage.getItem(key);
-    if (stored) {
+    
+    // Verificar se já existe no Firebase
+    var saved = await getSavedInventories();
+    var existingSaved = saved.find(function(item) {
+      return item.loja === currentStore && item.mes === currentMonth;
+    });
+    
+    if (existingSaved) {
+      // Carregar do Firebase e bloquear
+      inventory = existingSaved.data;
+      localStorage.setItem(key, JSON.stringify(inventory));
+      countSaved = true;
+      localStorage.setItem(SAVED_PREFIX + currentStore + '_' + currentMonth, 'true');
+    } else if (stored) {
+      // Carregar do localStorage
       inventory = JSON.parse(stored);
+      countSaved = localStorage.getItem(SAVED_PREFIX + currentStore + '_' + currentMonth) === 'true';
     } else {
+      // Criar novo
       var products = STORE_PRODUCTS[currentStore];
       inventory = products.map(function (p) {
         return {
@@ -192,8 +208,8 @@
         };
       });
       saveInventory();
+      countSaved = false;
     }
-    countSaved = localStorage.getItem(SAVED_PREFIX + currentStore + '_' + currentMonth) === 'true';
   }
 
   function saveInventory() {
