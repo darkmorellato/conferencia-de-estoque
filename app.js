@@ -193,8 +193,7 @@
       });
       saveInventory();
     }
-    // Para teste - sempre permite salvar
-    countSaved = false;
+    countSaved = localStorage.getItem(SAVED_PREFIX + currentStore + '_' + currentMonth) === 'true';
   }
 
   function saveInventory() {
