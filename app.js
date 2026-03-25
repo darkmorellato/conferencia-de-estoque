@@ -174,6 +174,16 @@
 
   // ===== LOAD INVENTORY =====
   async function loadInventory() {
+    console.log('loadInventory started');
+    console.log('currentStore:', currentStore);
+    console.log('STORE_PRODUCTS:', STORE_PRODUCTS);
+    console.log('STORE_PRODUCTS[ currentStore ]:', STORE_PRODUCTS[currentStore]);
+    
+    if (!STORE_PRODUCTS[currentStore] || STORE_PRODUCTS[currentStore].length === 0) {
+      alert('Produtos não encontrados para a loja: ' + currentStore);
+      return;
+    }
+    
     var key = STORAGE_PREFIX + currentStore + '_' + currentMonth;
     var stored = localStorage.getItem(key);
     
@@ -196,6 +206,7 @@
     } else {
       // Criar novo
       var products = STORE_PRODUCTS[currentStore];
+      console.log('Creating new inventory with', products.length, 'products');
       inventory = products.map(function (p) {
         return {
           name: p.name,
