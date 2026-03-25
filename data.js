@@ -1,0 +1,178 @@
+// Senhas das lojas
+const STORE_CREDENTIALS = {
+  kassouf: 'kassouf123',
+  premium: 'premium123',
+  dompedro: 'dompedro123',
+  realme: 'realme123',
+  xv: 'xv123'
+};
+
+// Nomes de exibição das lojas
+const STORE_NAMES = {
+  kassouf: 'Loja Kassouf',
+  premium: 'Loja Premium',
+  dompedro: 'Loja Dompedro',
+  realme: 'Loja Realme',
+  xv: 'Loja XV'
+};
+
+// Produtos da Loja Kassouf
+const KASSOUF_PRODUCTS = [
+  { name: 'ADAPTADOR TOMADA (BRINDE)', qty: 49 },
+  { name: 'BOTICARIO(BRINDE)', qty: 3 },
+  { name: 'CABO 120W 1.8 MTS VIRADO RESPECT', qty: 1 },
+  { name: 'CABO DE CARGA TY', qty: 5 },
+  { name: 'CABO DE CARGA V8', qty: 3 },
+  { name: 'CABO HS 123 HREBOS', qty: 2 },
+  { name: 'CABO LIGHTNING 2MTS ESSAGER 29W (IPHONE)', qty: 1 },
+  { name: 'CAPA HONOR X5B PLUS', qty: 3 },
+  { name: 'CAPA MOTOROLA G24', qty: 1 },
+  { name: 'CAPA REALME C51/C53', qty: 15 },
+  { name: 'CAPA REALME C55', qty: 1 },
+  { name: 'CAPA REALME C67', qty: 5 },
+  { name: 'CAPA REDMI 12', qty: 4 },
+  { name: 'CAPA REDMI 13', qty: 4 },
+  { name: 'CAPA REDMI 13C', qty: 9 },
+  { name: 'CAPA REDMI 14C 4G', qty: 14 },
+  { name: 'CAPA REDMI A5/ POCO C71', qty: 5 },
+  { name: 'CAPA REDMI NOTE 12 4G', qty: 1 },
+  { name: 'CAPA REDMI NOTE 12 PRO 4G', qty: 1 },
+  { name: 'CAPA REDMI NOTE 12S 4G', qty: 3 },
+  { name: 'CAPA REDMI NOTE 13 4G', qty: 14 },
+  { name: 'CAPA REDMI NOTE 13 PRO 4G', qty: 15 },
+  { name: 'CAPA REDMI NOTE 13 PRO 5G', qty: 26 },
+  { name: 'CARREGADOR 20W ESSAGER COMPLETO BRANCO', qty: 1 },
+  { name: 'CARREGADOR 20W ESSAGER COMPLETO PRETO', qty: 1 },
+  { name: 'CARREGADOR 20W KD 108C KAIDI', qty: 3 },
+  { name: 'CARREGADOR 50W LEHMOX', qty: 1 },
+  { name: 'CARREGADOR HONOR 66W C/CABO 1MT (BRINDE 400 LITE)', qty: 1 },
+  { name: 'CARREGADOR MOTOROLA 50W', qty: 7 },
+  { name: 'CARREGADOR MOTOROLA 68W', qty: 15 },
+  { name: 'CARREGADOR XIAOMI 120W', qty: 1 },
+  { name: 'CARREGADOR Y27-3 H\'MASTON', qty: 3 },
+  { name: 'CHIP CLARO PREZÃO', qty: 29 },
+  { name: 'CHIP VIVO PRE C REGARGA', qty: 10 },
+  { name: 'CHIP VIVO PRE S/ RECARGA', qty: 1 },
+  { name: 'COPO STANLEY (BRINDE)', qty: 17 },
+  { name: 'FONE BLUETOOTH BASEUS BOWIE E16 BRANCO', qty: 1 },
+  { name: 'FONE BLUETOOTH KNC 5603 KAIDI', qty: 1 },
+  { name: 'FONE BLUETOOTH REDMI AIRDOTS (BRINDE)', qty: 52 },
+  { name: 'FONE COM FIO LE-0217 LELONG', qty: 1 },
+  { name: 'FONE COM FIO S10+ GALAXY ESTÉRIO', qty: 1 },
+  { name: 'HONOR X5C PLUS 4/256 MIDNIGHT BLACK', qty: 8 },
+  { name: 'HONOR X7D 8/256 DESERT GOLD', qty: 7 },
+  { name: 'HONOR X7D 8/256 OCEAN CYAN', qty: 1 },
+  { name: 'HONOR X7D 8/256 VELVET BLACK', qty: 2 },
+  { name: 'IPHONE 13 128G PRETO (LACRADO)', qty: 1 },
+  { name: 'MOTO G05 4/128 VERDE', qty: 2 },
+  { name: 'MOTO G05 4/128 VERMELHO', qty: 8 },
+  { name: 'MOTO G15 4/128 CINZA', qty: -1 },
+  { name: 'MOTO G15 4/128 VERDE', qty: 1 },
+  { name: 'MOTO G15 4/256 CINZA', qty: 1 },
+  { name: 'MOTO G15 4/256 VERDE', qty: 2 },
+  { name: 'MOTO G15 8/256 GRAVITY GRAY', qty: 2 },
+  { name: 'MOTO G15 8/256 SEA BLUE', qty: 3 },
+  { name: 'MOTO G56 5G 8/256 BLUE OYSTER', qty: 2 },
+  { name: 'MOTO G56 5G 8/256 GRAY MIST', qty: 5 },
+  { name: 'MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK', qty: 1 },
+  { name: 'PELICULA FOSCA HYDROGEL SUPER PREMIUM', qty: 80 },
+  { name: 'PELICULA HD HYDROGEL PREMIUM +', qty: 130 },
+  { name: 'PELICULA HD HYDROGEL STANDARD', qty: 74 },
+  { name: 'PELICULA HD HYDROGEL SUPER PREMIUM', qty: 20 },
+  { name: 'PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM', qty: 63 },
+  { name: 'PELICULA TRASEIRA DESENHOS', qty: 4 },
+  { name: 'REALME C67 8/256 ** S/NFC **BLACK ROCK', qty: 7 },
+  { name: 'REALME C71 8/256 FOREST OWL', qty: 6 },
+  { name: 'REALME C71 8/256 WHITE SWAN', qty: 18 },
+  { name: 'REALME C85 8/256 SWAN BLACK', qty: 3 }
+];
+
+// Produtos da Loja Premium
+const PREMIUM_PRODUCTS = [
+  { name: 'ADAPTADOR TOMADA (BRINDE)', qty: 46 },
+  { name: 'BOTICARIO(BRINDE)', qty: 4 },
+  { name: 'CABO 120W 7A 2MT (VIRADO) ESSAGER', qty: 1 },
+  { name: 'CABO HB 11-2 H\'MASTON', qty: 1 },
+  { name: 'CABO LIGHTNING 2MTS ESSAGER 29W (IPHONE)', qty: 1 },
+  { name: 'CAPA REALME C61/C63', qty: 4 },
+  { name: 'CAPA REDMI A5 / POCO C71', qty: 5 },
+  { name: 'CARREGADOR 20W ESSAGER COMPLETO BRANCO', qty: 1 },
+  { name: 'CARREGADOR 20W ESSAGER COMPLETO PRETO', qty: 1 },
+  { name: 'CARREGADOR 20W KD 108C KAIDI', qty: 3 },
+  { name: 'CARREGADOR 20W KD 669CC KAIDI', qty: 5 },
+  { name: 'CARREGADOR 50W LEHMOX', qty: 2 },
+  { name: 'CARREGADOR HONOR 66W C/CABO 1MT (BRINDE 400 LITE)', qty: 1 },
+  { name: 'CARREGADOR MOTOROLA 50W', qty: 11 },
+  { name: 'CARREGADOR MOTOROLA 68W', qty: 14 },
+  { name: 'CARREGADOR ONE PLUS(REALME) 100W COMPLETO', qty: 1 },
+  { name: 'CARREGADOR XIAOMI 120W', qty: 1 },
+  { name: 'CHIP CLARO PREZÃO', qty: 31 },
+  { name: 'CHIP VIVO PRE C REGARGA', qty: 10 },
+  { name: 'CHIP VIVO PRE S/ RECARGA', qty: 1 },
+  { name: 'COPO STANLEY (BRINDE)', qty: 6 },
+  { name: 'FONE BLUETOOTH BASEUS BOWIE E16 PRETO', qty: 1 },
+  { name: 'FONE BLUETOOTH KD 7101 KAIDI', qty: 1 },
+  { name: 'FONE BLUETOOTH KNC5602 KAIDI', qty: 1 },
+  { name: 'FONE BLUETOOTH LENOVO THINKPLUS XT83II', qty: 1 },
+  { name: 'FONE BLUETOOTH REDMI AIRDOTS (BRINDE)', qty: 55 },
+  { name: 'FONE COM FIO LE-0201 LELONG', qty: 1 },
+  { name: 'FONE COM FIO LE-0204 LELONG', qty: 4 },
+  { name: 'FONE COM FIO LE-0216 LELONG', qty: 1 },
+  { name: 'FONE COM FIO LE-0217 LELONG', qty: 1 },
+  { name: 'HONOR X5C PLUS 4/256 MIDNIGHT BLACK', qty: 5 },
+  { name: 'HONOR X7D 8/256 DESERT GOLD', qty: 9 },
+  { name: 'HONOR X7D 8/256 OCEAN CYAN', qty: 11 },
+  { name: 'HONOR X7D 8/256 VELVET BLACK', qty: 3 },
+  { name: 'IPHONE 14 128G BRANCO ((LACRADO))', qty: 1 },
+  { name: 'MICROFONE SEM FIO KMF4-A KAIDI', qty: 1 },
+  { name: 'MOTO G05 4/128 VERDE', qty: 4 },
+  { name: 'MOTO G05 4/128 VERMELHO', qty: 8 },
+  { name: 'MOTO G15 4/128 VERDE', qty: 4 },
+  { name: 'MOTO G15 4/256 CINZA', qty: 17 },
+  { name: 'MOTO G15 4/256 VERDE', qty: 8 },
+  { name: 'MOTO G15 8/256 GRAVITY GRAY', qty: 5 },
+  { name: 'MOTO G15 8/256 SEA BLUE', qty: 2 },
+  { name: 'MOTO G56 5G 8/256 GRAY MIST', qty: 4 },
+  { name: 'MOTO G86 5G 8/256 LILAC BLUE', qty: 1 },
+  { name: 'MOTOROLA EDGE 50 5G FUSION 8/256 HOT PINK', qty: 1 },
+  { name: 'MOTOROLA EDGE 60 5G FUSION 8/256 GREEN', qty: 1 },
+  { name: 'PELICULA FOSCA HYDROGEL SUPER PREMIUM', qty: 76 },
+  { name: 'PELICULA HD HYDROGEL PREMIUM +', qty: 128 },
+  { name: 'PELICULA HD HYDROGEL STANDARD', qty: 92 },
+  { name: 'PELICULA HD HYDROGEL SUPER PREMIUM', qty: 21 },
+  { name: 'PELICULA PRIVACIDADE HYDROGEL SUPER PREMIUM', qty: 70 },
+  { name: 'PELICULA TRASEIRA DESENHOS', qty: 12 },
+  { name: 'REALME C67 8/256 ** S/NFC ** BLACK ROCK', qty: 6 },
+  { name: 'REALME C71 8/256 FOREST OWL', qty: 4 },
+  { name: 'REALME C71 8/256 WHITE SWAN', qty: 16 },
+  { name: 'REALME C85 8/256 KINGFISHER BLUE', qty: 2 },
+  { name: 'REALME C85 8/256 SWAN BLACK', qty: 1 }
+];
+
+// Produtos da Loja Dompedro
+const DOMPEDRO_PRODUCTS = [];
+
+// Produtos da Loja Realme
+const REALME_PRODUCTS = [];
+
+// Produtos da Loja XV
+const XV_PRODUCTS = [];
+
+// Mapa de produtos por loja
+const STORE_PRODUCTS = {
+  kassouf: KASSOUF_PRODUCTS,
+  premium: PREMIUM_PRODUCTS,
+  dompedro: DOMPEDRO_PRODUCTS,
+  realme: REALME_PRODUCTS,
+  xv: XV_PRODUCTS
+};
+
+// Função para carregar produtos de Excel (futuro)
+function loadProductsFromExcel(store, data) {
+  STORE_PRODUCTS[store] = data.map(function(row) {
+    return {
+      name: row.nome || row.produto || row.item || '',
+      qty: parseInt(row.qty || row.quantidade || row.qtd || row.estoque || 0)
+    };
+  });
+}

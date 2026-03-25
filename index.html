@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conferência de Estoque</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <!-- Firebase Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-page" class="page active">
+    <div class="login-container">
+      <div class="login-bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+      <div class="login-box">
+        <div class="login-logo">
+          <div class="logo-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+              <line x1="12" y1="22.08" x2="12" y2="12" />
+            </svg>
+          </div>
+          <h1>StockFlow</h1>
+        </div>
+        <p class="subtitle">Controle de estoque inteligente</p>
+
+        <!-- Aba de Meses Salvos -->
+        <div class="saved-months-tabs">
+          <button class="tab-btn active" data-tab="new-entry">Nova Conferência</button>
+          <button class="tab-btn" data-tab="saved-months">Meses Salvos</button>
+        </div>
+
+        <!-- Conteúdo da aba Nova Conferência -->
+        <div id="tab-new-entry" class="tab-content active">
+          <form id="login-form">
+            <div class="form-group">
+              <label for="store-select">Loja</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+                <select id="store-select" required>
+                  <option value="">Selecione a loja</option>
+                  <option value="kassouf">Kassouf</option>
+                  <option value="premium">Premium</option>
+                  <option value="dompedro">Dompedro</option>
+                  <option value="realme">Realme</option>
+                  <option value="xv">XV</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="month-select">Mês de Referência</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                <select id="month-select" required>
+                  <option value="2026-03">Março 2026</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password-input">Senha</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <input type="password" id="password-input" placeholder="••••••••" required>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary">Entrar</button>
+            <p id="login-error" class="error-msg hidden">Senha incorreta</p>
+          </form>
+        </div>
+
+        <!-- Conteúdo da aba Meses Salvos -->
+        <div id="tab-saved-months" class="tab-content">
+          <div class="saved-list" id="saved-list">
+            <p class="loading-text">Carregando...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INVENTORY -->
+  <div id="inventory-page" class="page">
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <div class="logo-sm">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+            <line x1="12" y1="22.08" x2="12" y2="12" />
+          </svg>
+        </div>
+        <h2 id="store-name-header">Loja</h2>
+        <span class="badge-live">ao vivo</span>
+        <span id="month-badge" class="badge-month">Março 2026</span>
+      </div>
+      <div class="top-bar-right">
+        <span id="date-display" class="date-label"></span>
+        <button id="export-btn" class="btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Exportar
+        </button>
+        <button id="logout-btn" class="btn-ghost btn-logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="summary-cards">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-total">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="total-products">0</div>
+            <div class="stat-label">Total</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-ok">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value stat-ok" id="count-ok">0</div>
+            <div class="stat-label">Conferidos</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-pending">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value stat-pending" id="count-pending">0</div>
+            <div class="stat-label">Pendentes</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-issues">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value stat-issues" id="count-issues">0</div>
+            <div class="stat-label">Divergências</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Produtos</h3>
+          <input type="text" id="search-input" class="search-input" placeholder="Buscar produto...">
+          <div class="table-progress">
+            <div class="progress-ring" id="progress-ring">
+              <svg viewBox="0 0 36 36">
+                <path class="ring-bg"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path class="ring-fill" id="ring-path"
+                  d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  stroke-dasharray="0, 100" />
+              </svg>
+              <span class="ring-text" id="ring-text">0%</span>
+            </div>
+            <span id="progress-text" class="progress-label">0 de 0</span>
+            <button id="save-all-btn" class="btn-save-all" disabled>Confirmar</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table id="inventory-table">
+            <thead>
+              <tr>
+                <th class="col-num">#</th>
+                <th class="col-status"></th>
+                <th class="col-name">Produto</th>
+                <th class="col-qty">Sistema</th>
+                <th class="col-counted">Contado</th>
+                <th class="col-defect">Defeito</th>
+                <th class="col-missing">Faltou</th>
+                <th class="col-fix">Corrigir</th>
+                <th class="col-actions"></th>
+                <th class="col-edit"></th>
+              </tr>
+            </thead>
+            <tbody id="inventory-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- REPORT PAGE -->
+  <div id="report-page" class="page">
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <div class="logo-sm">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+            <line x1="12" y1="22.08" x2="12" y2="12" />
+          </svg>
+        </div>
+        <h2>Relatório de Contagem</h2>
+        <span id="report-month-badge" class="badge-month">Março 2026</span>
+      </div>
+      <div class="top-bar-right">
+        <button id="back-to-inventory-btn" class="btn-ghost">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Voltar
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="report-alert">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+        <div>
+          <strong>Confirme os dados antes de salvar!</strong>
+          <p>Revise todas as quantidades preenchidas. Após salvar, não será possível alterar as informações.</p>
+        </div>
+      </div>
+
+      <div class="report-cards">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-total">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value" id="report-total">0</div>
+            <div class="stat-label">Total Produtos</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-ok">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value stat-ok" id="report-verified">0</div>
+            <div class="stat-label">Conferidos</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-issues">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <div class="stat-value stat-issues" id="report-issues">0</div>
+            <div class="stat-label">Divergências</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Resumo da Contagem</h3>
+        </div>
+        <div class="table-scroll">
+          <table id="report-table">
+            <thead>
+              <tr>
+                <th class="col-num">#</th>
+                <th class="col-name">Produto</th>
+                <th class="col-qty">Sistema</th>
+                <th class="col-counted">Contado</th>
+                <th class="col-defect">Defeito</th>
+                <th class="col-missing">Faltou</th>
+                <th class="col-status">Status</th>
+              </tr>
+            </thead>
+            <tbody id="report-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="report-actions">
+        <button id="save-count-btn" class="btn-primary btn-lg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+            <polyline points="17 21 17 13 7 13 7 21" />
+            <polyline points="7 3 7 8 15 8" />
+          </svg>
+          Salvar Contagem
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+      </div>
+      <p id="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn-ghost">Cancelar</button>
+        <button id="modal-confirm" class="btn-primary btn-sm">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL -->
+  <div id="success-modal" class="modal-overlay hidden">
+    <div class="modal-box modal-success">
+      <div class="modal-icon modal-icon-success">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      </div>
+      <p id="success-message">Contagem salva com sucesso!</p>
+      <div class="modal-actions">
+        <button id="success-ok" class="btn-primary">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="firebase.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
