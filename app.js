@@ -193,7 +193,8 @@
       });
       saveInventory();
     }
-    countSaved = localStorage.getItem(SAVED_PREFIX + currentStore + '_' + currentMonth) === 'true';
+    // Para teste - sempre permite salvar
+    countSaved = false;
   }
 
   function saveInventory() {
@@ -592,6 +593,7 @@
         saveCountBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Salvando...';
         
         var result = await saveToFirestore(currentStore, currentMonth, inventory);
+        console.log('Salvou no Firebase:', result);
         
         if (result.success) {
           showSuccessModal('<strong>Contagem salva com sucesso!</strong><br><br>ID: ' + result.id);
@@ -610,29 +612,36 @@
     var savedList = document.getElementById('saved-list');
     savedList.innerHTML = '<p class="loading-text">Carregando...</p>';
     
-    var saved = await getSavedInventories();
-    
-    if (saved.length === 0) {
-      savedList.innerHTML = '<p class="empty-text">Nenhuma contagem salva online.</p>';
-      return;
+    console.log('Carregando inventários salvos...');
+    try {
+      var saved = await getSavedInventories();
+      console.log('Inventários carregados:', saved);
+      
+      if (saved.length === 0) {
+        savedList.innerHTML = '<p class="empty-text">Nenhuma contagem salva online.</p>';
+        return;
+      }
+
+      var html = '';
+      saved.forEach(function (item) {
+        var data = item.data || [];
+        var verified = data.filter(function (i) { return i.counted !== null; }).length;
+        html += '<div class="saved-item">';
+        html += '<div class="saved-info">';
+        html += '<strong>' + (STORE_NAMES[item.loja] || item.loja) + '</strong>';
+        html += '<span>' + getMonthName(item.mes) + '</span>';
+        html += '</div>';
+        html += '<div class="saved-stats">';
+        html += '<span>' + verified + '/' + data.length + ' conferidos</span>';
+        html += '</div>';
+        html += '</div>';
+      });
+
+      savedList.innerHTML = html;
+    } catch(e) {
+      console.error('Erro ao carregar:', e);
+      savedList.innerHTML = '<p class="error-text">Erro ao carregar: ' + e.message + '</p>';
     }
-
-    var html = '';
-    saved.forEach(function (item) {
-      var data = item.data || [];
-      var verified = data.filter(function (i) { return i.counted !== null; }).length;
-      html += '<div class="saved-item">';
-      html += '<div class="saved-info">';
-      html += '<strong>' + STORE_NAMES[item.loja] + '</strong>';
-      html += '<span>' + getMonthName(item.mes) + '</span>';
-      html += '</div>';
-      html += '<div class="saved-stats">';
-      html += '<span>' + verified + '/' + data.length + ' conferidos</span>';
-      html += '</div>';
-      html += '</div>';
-    });
-
-    savedList.innerHTML = html;
   }
 
   // ===== UPDATE SUMMARY =====

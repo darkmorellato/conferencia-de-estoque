@@ -3,20 +3,31 @@ var db = null;
 var firebaseInitialized = false;
 
 function initFirebase() {
+  console.log('initFirebase called, firebase:', typeof firebase, 'config:', typeof FIREBASE_CONFIG);
   if (firebaseInitialized) return db;
   if (typeof firebase !== 'undefined' && typeof FIREBASE_CONFIG !== 'undefined') {
+    console.log('Initializing Firebase with config:', FIREBASE_CONFIG);
     firebase.initializeApp(FIREBASE_CONFIG);
     db = firebase.firestore();
     firebaseInitialized = true;
+    console.log('Firebase initialized successfully');
     return db;
   }
+  console.log('Firebase NOT initialized - missing dependencies');
   return null;
 }
 
 // Save inventory to Firestore
 async function saveToFirestore(store, month, inventory) {
-  if (!db) initFirebase();
-  if (!db) return { success: false, error: 'Firebase not initialized' };
+  console.log('saveToFirestore called:', store, month, 'items:', inventory.length);
+  if (!db) {
+    console.log('DB not initialized, calling initFirebase');
+    initFirebase();
+  }
+  if (!db) {
+    console.log('DB still null after init');
+    return { success: false, error: 'Firebase not initialized' };
+  }
   
   try {
     var docRef = await db.collection('inventarios').add({
@@ -33,7 +44,11 @@ async function saveToFirestore(store, month, inventory) {
 
 // Get all saved inventories
 async function getSavedInventories() {
-  if (!db) initFirebase();
+  console.log('getSavedInventories called');
+  if (!db) {
+    console.log('DB not initialized, calling initFirebase');
+    initFirebase();
+  }
   if (!db) return [];
   
   try {
