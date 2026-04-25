@@ -1,3 +1,8 @@
+// ============================================
+// CONFIGURAÇÃO DO SISTEMA DE INVENTÁRIO
+// Estrutura organizada por períodos mensais
+// ============================================
+
 // Senhas das lojas
 const STORE_CREDENTIALS = {
   kassouf: 'kassouf123',
@@ -16,8 +21,12 @@ const STORE_NAMES = {
   xv: 'Loja XV'
 };
 
-// Produtos da Loja Kassouf
-const KASSOUF_PRODUCTS = [
+// ============================================
+// DADOS DO INVENTÁRIO POR MÊS
+// ============================================
+
+// ----- MARÇO 2026 (mês atual) -----
+const KASSOUF_PRODUCTS_MAR_2026 = [
   { name: 'ADAPTADOR TOMADA (BRINDE)', qty: 49 },
   { name: 'BOTICARIO(BRINDE)', qty: 3 },
   { name: 'CABO 120W 1.8 MTS VIRADO RESPECT', qty: 1 },
@@ -87,8 +96,7 @@ const KASSOUF_PRODUCTS = [
   { name: 'REALME C85 8/256 SWAN BLACK', qty: 3 }
 ];
 
-// Produtos da Loja Premium
-const PREMIUM_PRODUCTS = [
+const PREMIUM_PRODUCTS_MAR_2026 = [
   { name: 'ADAPTADOR TOMADA (BRINDE)', qty: 46 },
   { name: 'BOTICARIO(BRINDE)', qty: 4 },
   { name: 'CABO 120W 7A 2MT (VIRADO) ESSAGER', qty: 1 },
@@ -149,8 +157,7 @@ const PREMIUM_PRODUCTS = [
   { name: 'REALME C85 8/256 SWAN BLACK', qty: 1 }
 ];
 
-// Produtos da Loja Dompedro
-const DOMPEDRO_PRODUCTS = [
+const DOMPEDRO_PRODUCTS_MAR_2026 = [
   { name: 'ADAPTADOR TOMADA (BRINDE)', qty: 22 },
   { name: 'CABO 2 IN 1 KD177 KAIDI', qty: 5 },
   { name: 'CABO ADAPTADOR HDMI - ZHQ 07 H\'MASTON', qty: 1 },
@@ -244,8 +251,7 @@ const DOMPEDRO_PRODUCTS = [
   { name: 'REDMI NOTE 15 PRO 4G 8/256 TITANIUM', qty: 1 }
 ];
 
-// Produtos da Loja Realme
-const REALME_PRODUCTS = [
+const REALME_PRODUCTS_MAR_2026 = [
   { name: 'ADAPTADOR TOMADA (BRINDE)', qty: 40 },
   { name: 'BODY SPLASH. WEPINK (BRINDE)', qty: 1 },
   { name: 'BOTICARIO(BRINDE)', qty: 4 },
@@ -340,8 +346,7 @@ const REALME_PRODUCTS = [
   { name: 'REDMI A5 4/128 VERDE', qty: 1 }
 ];
 
-// Produtos da Loja XV
-const XV_PRODUCTS = [
+const XV_PRODUCTS_MAR_2026 = [
   { name: 'ADAPTADOR TOMADA (BRINDE)', qty: 44 },
   { name: 'BOTICARIO(BRINDE)', qty: 2 },
   { name: 'CABO 100W 7A 2MT ESSAGER (HONOR) AZUL', qty: 1 },
@@ -457,7 +462,74 @@ const XV_PRODUCTS = [
   { name: 'REDMI A5 4/128 VERDE', qty: 1 }
 ];
 
-// Mapa de produtos por loja
+// ----- ABRIL 2026 (novo mês - estrutura preparada) -----
+// INSTRUÇÕES: Copie os arrays acima, renomeie com _APR_2026
+// e atualize as quantidades conforme o inventário de Abril
+
+const KASSOUF_PRODUCTS_APR_2026 = [
+  // COPIAR DADOS DE MARÇO E ATUALIZAR QUANTIDADES
+  // OU ADICIONAR NOVOS PRODUTOS AQUI
+];
+
+const PREMIUM_PRODUCTS_APR_2026 = [
+  // COPIAR DADOS DE MARÇO E ATUALIZAR QUANTIDADES
+];
+
+const DOMPEDRO_PRODUCTS_APR_2026 = [
+  // COPIAR DADOS DE MARÇO E ATUALIZAR QUANTIDADES
+];
+
+const REALME_PRODUCTS_APR_2026 = [
+  // COPIAR DADOS DE MARÇO E ATUALIZAR QUANTIDADES
+];
+
+const XV_PRODUCTS_APR_2026 = [
+  // COPIAR DADOS DE MARÇO E ATUALIZAR QUANTIDADES
+];
+
+// ============================================
+// REGISTRO DE PERÍODOS DISPONÍVEIS
+// ============================================
+
+// Objeto que registra todos os períodos disponíveis
+// Para adicionar um novo mês, crie uma entrada aqui
+const INVENTORY_PERIODS = {
+  '2026-03': {
+    label: 'Março 2026',
+    stores: {
+      kassouf: KASSOUF_PRODUCTS_MAR_2026,
+      premium: PREMIUM_PRODUCTS_MAR_2026,
+      dompedro: DOMPEDRO_PRODUCTS_MAR_2026,
+      realme: REALME_PRODUCTS_MAR_2026,
+      xv: XV_PRODUCTS_MAR_2026
+    }
+  },
+  '2026-04': {
+    label: 'Abril 2026',
+    stores: {
+      kassouf: KASSOUF_PRODUCTS_APR_2026,
+      premium: PREMIUM_PRODUCTS_APR_2026,
+      dompedro: DOMPEDRO_PRODUCTS_APR_2026,
+      realme: REALME_PRODUCTS_APR_2026,
+      xv: XV_PRODUCTS_APR_2026
+    }
+  }
+  // Adicionar novos meses aqui seguindo o padrão:
+  // '2026-05': { label: 'Maio 2026', stores: { ... } }
+};
+
+// ============================================
+// COMPATIBILIDADE COM CÓDIGO EXISTENTE
+// ============================================
+
+// Mantém variáveis antigas para compatibilidade (apontam para Março 2026)
+const KASSOUF_PRODUCTS = KASSOUF_PRODUCTS_MAR_2026;
+const PREMIUM_PRODUCTS = PREMIUM_PRODUCTS_MAR_2026;
+const DOMPEDRO_PRODUCTS = DOMPEDRO_PRODUCTS_MAR_2026;
+const REALME_PRODUCTS = REALME_PRODUCTS_MAR_2026;
+const XV_PRODUCTS = XV_PRODUCTS_MAR_2026;
+
+// Mapa de produtos por loja (mantido para compatibilidade)
 const STORE_PRODUCTS = {
   kassouf: KASSOUF_PRODUCTS,
   premium: PREMIUM_PRODUCTS,
@@ -466,12 +538,121 @@ const STORE_PRODUCTS = {
   xv: XV_PRODUCTS
 };
 
-// Função para carregar produtos de Excel (futuro)
-function loadProductsFromExcel(store, data) {
-  STORE_PRODUCTS[store] = data.map(function (row) {
+// ============================================
+// FUNÇÕES UTILITÁRIAS
+// ============================================
+
+/**
+ * Obtém produtos de uma loja para um período específico
+ * @param {string} store - Nome da loja (kassouf, premium, etc.)
+ * @param {string} period - Período no formato 'YYYY-MM' (ex: '2026-04')
+ * @returns {Array} Lista de produtos do período
+ */
+function getProductsForPeriod(store, period) {
+  if (INVENTORY_PERIODS[period] && INVENTORY_PERIODS[period].stores[store]) {
+    return INVENTORY_PERIODS[period].stores[store];
+  }
+  // Fallback para dados antigos
+  return STORE_PRODUCTS[store] || [];
+}
+
+/**
+ * Obtém lista de períodos disponíveis
+ * @returns {Array} Lista de objetos {value, label}
+ */
+function getAvailablePeriods() {
+  return Object.keys(INVENTORY_PERIODS).map(function(key) {
     return {
-      name: row.nome || row.produto || row.item || '',
-      qty: parseInt(row.qty || row.quantidade || row.qtd || row.estoque || 0)
+      value: key,
+      label: INVENTORY_PERIODS[key].label
     };
   });
+}
+
+/**
+ * Verifica se um período possui dados
+ * @param {string} period - Período no formato 'YYYY-MM'
+ * @returns {boolean}
+ */
+function hasPeriodData(period) {
+  if (!INVENTORY_PERIODS[period]) return false;
+  const stores = INVENTORY_PERIODS[period].stores;
+  return Object.keys(stores).some(function(store) {
+    return stores[store] && stores[store].length > 0;
+  });
+}
+
+/**
+ * Carrega produtos de Excel (futuro)
+ * @param {string} store - Nome da loja
+ * @param {string} period - Período no formato 'YYYY-MM'
+ * @param {Array} data - Dados do Excel parseados
+ */
+function loadProductsFromExcel(store, period, data) {
+  var formatted = data.map(function(row) {
+    return {
+      name: row.nome || row.produto || row.item || row.name || '',
+      qty: parseInt(row.qty || row.quantidade || row.qtd || row.estoque || row.quantity || 0)
+    };
+  });
+  
+  // Se o período existe, atualiza os produtos da loja
+  if (INVENTORY_PERIODS[period]) {
+    INVENTORY_PERIODS[period].stores[store] = formatted;
+  }
+  
+  // Atualiza também o mapa de compatibilidade
+  if (period === '2026-03') {
+    STORE_PRODUCTS[store] = formatted;
+  }
+}
+
+// ============================================
+// CHECKLIST PARA ADICIONAR NOVO MÊS
+// ============================================
+/*
+
+1. COPIAR PRODUTOS DO MÊS ANTERIOR:
+   - Copie os arrays _MAR_2026 e renomeie para o novo mês (ex: _APR_2026)
+
+2. ATUALIZAR QUANTIDADES:
+   - Substitua os valores de 'qty' pelos novos estoques
+   - Adicione/remova produtos conforme necessário
+
+3. ATUALIZAR INVENTORY_PERIODS:
+   - Adicione nova entrada no objeto INVENTORY_PERIODS
+   - Exemplo:
+     '2026-05': {
+       label: 'Maio 2026',
+       stores: {
+         kassouf: KASSOUF_PRODUCTS_MAY_2026,
+         premium: PREMIUM_PRODUCTS_MAY_2026,
+         ...
+       }
+     }
+
+4. ATUALIZAR app.js:
+   - Adicione a nova opção no <select> de meses
+   - Exemplo: <option value="2026-05">Maio 2026</option>
+
+5. TESTAR:
+   - Abra o sistema e verifique se o novo mês aparece
+   - Verifique se os produtos estão corretos
+   - Teste a troca entre meses
+
+*/
+
+// ============================================
+// EXPORTS (para módulos se necessário)
+// ============================================
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    STORE_CREDENTIALS: STORE_CREDENTIALS,
+    STORE_NAMES: STORE_NAMES,
+    INVENTORY_PERIODS: INVENTORY_PERIODS,
+    getProductsForPeriod: getProductsForPeriod,
+    getAvailablePeriods: getAvailablePeriods,
+    hasPeriodData: hasPeriodData,
+    loadProductsFromExcel: loadProductsFromExcel
+  };
 }

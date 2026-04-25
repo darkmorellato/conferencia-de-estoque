@@ -172,56 +172,74 @@
     saveCountBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Salvar Contagem';
   });
 
-  // ===== LOAD INVENTORY =====
-  async function loadInventory() {
-    console.log('loadInventory started');
-    console.log('currentStore:', currentStore);
-    console.log('STORE_PRODUCTS:', STORE_PRODUCTS);
-    console.log('STORE_PRODUCTS[ currentStore ]:', STORE_PRODUCTS[currentStore]);
-    
-    if (!STORE_PRODUCTS[currentStore] || STORE_PRODUCTS[currentStore].length === 0) {
+// ===== LOAD INVENTORY =====
+async function loadInventory() {
+  console.log('loadInventory started');
+  console.log('currentStore:', currentStore);
+  console.log('currentMonth:', currentMonth);
+  
+  // Obter produtos para o período selecionado usando a nova função do data.js
+  var products = [];
+  if (typeof getProductsForPeriod === 'function') {
+    products = getProductsForPeriod(currentStore, currentMonth);
+  } else {
+    // Fallback para estrutura antiga
+    products = STORE_PRODUCTS[currentStore] || [];
+  }
+  
+  console.log('Products for period:', products);
+
+  if (!products || products.length === 0) {
+    // Se não houver dados para Abril ainda, usar dados de Março como fallback
+    if (currentMonth === '2026-04') {
+      products = STORE_PRODUCTS[currentStore] || [];
+      if (!products || products.length === 0) {
+        alert('Produtos não encontrados para a loja: ' + currentStore);
+        return;
+      }
+    } else {
       alert('Produtos não encontrados para a loja: ' + currentStore);
       return;
     }
-    
-    var key = STORAGE_PREFIX + currentStore + '_' + currentMonth;
-    var stored = localStorage.getItem(key);
-    
-    // Verificar se já existe no Firebase
-    var saved = await getSavedInventories();
-    var existingSaved = saved.find(function(item) {
-      return item.loja === currentStore && item.mes === currentMonth;
-    });
-    
-    if (existingSaved) {
-      // Carregar do Firebase e bloquear
-      inventory = existingSaved.data;
-      localStorage.setItem(key, JSON.stringify(inventory));
-      countSaved = true;
-      localStorage.setItem(SAVED_PREFIX + currentStore + '_' + currentMonth, 'true');
-    } else if (stored) {
-      // Carregar do localStorage
-      inventory = JSON.parse(stored);
-      countSaved = localStorage.getItem(SAVED_PREFIX + currentStore + '_' + currentMonth) === 'true';
-    } else {
-      // Criar novo
-      var products = STORE_PRODUCTS[currentStore];
-      console.log('Creating new inventory with', products.length, 'products');
-      inventory = products.map(function (p) {
-        return {
-          name: p.name,
-          qty: p.qty,
-          counted: null,
-          defeito: 0,
-          faltou: 0,
-          verificado: false,
-          corrigir: false
-        };
-      });
-      saveInventory();
-      countSaved = false;
-    }
   }
+
+  var key = STORAGE_PREFIX + currentStore + '_' + currentMonth;
+  var stored = localStorage.getItem(key);
+
+  // Verificar se já existe no Firebase
+  var saved = await getSavedInventories();
+  var existingSaved = saved.find(function(item) {
+    return item.loja === currentStore && item.mes === currentMonth;
+  });
+
+  if (existingSaved) {
+    // Carregar do Firebase e bloquear
+    inventory = existingSaved.data;
+    localStorage.setItem(key, JSON.stringify(inventory));
+    countSaved = true;
+    localStorage.setItem(SAVED_PREFIX + currentStore + '_' + currentMonth, 'true');
+  } else if (stored) {
+    // Carregar do localStorage
+    inventory = JSON.parse(stored);
+    countSaved = localStorage.getItem(SAVED_PREFIX + currentStore + '_' + currentMonth) === 'true';
+  } else {
+    // Criar novo
+    console.log('Creating new inventory with', products.length, 'products');
+    inventory = products.map(function (p) {
+      return {
+        name: p.name,
+        qty: p.qty,
+        counted: null,
+        defeito: 0,
+        faltou: 0,
+        verificado: false,
+        corrigir: false
+      };
+    });
+    saveInventory();
+    countSaved = false;
+  }
+}
 
   function saveInventory() {
     var key = STORAGE_PREFIX + currentStore + '_' + currentMonth;
